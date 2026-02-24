@@ -40,7 +40,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "com.github.vhuthu"
             artifactId = "stackwhisper"
-            version = "1.0"
+            version = "0.1"
 
             afterEvaluate {
                 from(components["release"])
