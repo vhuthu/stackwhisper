@@ -71,7 +71,7 @@ Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    debugImplementation("com.github.yourusername:stackwhisper:1.0")
+    implementation("com.github.vhuthu:stackwhisper:0.1")
 }
 ```
 
