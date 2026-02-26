@@ -27,6 +27,7 @@ class FragmentNotAttachedRule : ErrorRule {
         suggestedFix = "Move your context access into onViewCreated() " +
                 "or later. Never call requireContext() in the constructor " +
                 "or before onAttach() has been called.",
-        confidence = 85
+        confidence = 85,
+        category = category
     )
 }

@@ -31,6 +31,7 @@ class CoroutineScopeRule : ErrorRule {
                 "inside a ViewModel, or lifecycleScope.launch inside an Activity " +
                 "or Fragment. These scopes cancel automatically when the " +
                 "lifecycle ends.",
-        confidence = 72
+        confidence = 72,
+        category = category
     )
 }
