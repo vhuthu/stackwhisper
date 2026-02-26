@@ -9,7 +9,10 @@ import com.vhuthuk.core.rules.ViewAfterDestroyRule
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 class RulesTest {
 
     @Test
@@ -110,14 +113,25 @@ class RulesTest {
 
     @Test
     fun `StackWhisper init guard prevents double initialization`() {
-        var initCount = 0
+        val field = StackWhisper::class.java.getDeclaredField("isInitialized")
+        field.isAccessible = true
+        val atomicBoolean = field.get(StackWhisper) as java.util.concurrent.atomic.AtomicBoolean
+        atomicBoolean.set(false)
 
-        repeat(3) {
-            if (initCount == 0) initCount++
-            else return@repeat
-        }
+        var handlerSetCount = 0
+        val originalHandler = Thread.getDefaultUncaughtExceptionHandler()
 
-        assertTrue(initCount == 1)
+        val mockContext = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        StackWhisper.init(mockContext)
+        handlerSetCount++
+
+        StackWhisper.init(mockContext)
+
+        assertTrue(handlerSetCount == 1)
+
+        Thread.setDefaultUncaughtExceptionHandler(originalHandler)
+
+        atomicBoolean.set(false)
     }
 
     @Test

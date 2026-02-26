@@ -11,7 +11,7 @@ data class ErrorExplanation(
     val confidence: Int,
     val category: ErrorCategory = ErrorCategory.GENERAL
 ) {
-    fun printToLogcat() {
+    fun printToLogcat(throwable: Throwable) {
         val tag = "StackWhisper/${category.logTag()}"
         val timestamp = SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss",
@@ -20,19 +20,19 @@ data class ErrorExplanation(
         val thread = Thread.currentThread().name
 
         Log.e(tag, """
-        $BANNER
-        ┌─────────────────────────────────────
-        │ 🔍 $title
-        │ Confidence: $confidence%
-        │ Version:    StackWhisper v0.2.0
-        │ Time:       $timestamp
-        │ Thread:     $thread
-        │
-        │ Cause:  $probableCause
-        │
-        │ Fix:    $suggestedFix
-        └─────────────────────────────────────
-    """.trimIndent())
+            $BANNER
+            ┌─────────────────────────────────────
+            │ 🔍 $title
+            │ Confidence: $confidence%
+            │ Version:    StackWhisper v0.2.0
+            │ Time:       $timestamp
+            │ Thread:     $thread
+            │
+            │ Cause:  $probableCause
+            │
+            │ Fix:    $suggestedFix
+            └─────────────────────────────────────
+        """.trimIndent(), throwable)
     }
 
     companion object {
@@ -61,7 +61,7 @@ data class ErrorExplanation(
                     │
                     │ Fix:    Check the full stacktrace above.
                     └─────────────────────────────────────
-                """.trimIndent())
+                """.trimIndent(), t)
             }
         }
     }

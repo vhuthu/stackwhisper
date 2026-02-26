@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        //This where sample testing I was doing lol
+        //sample testing lol
 
        // triggerFragmentNotAttachedCrash()
         //triggerNetworkOnMainThread()

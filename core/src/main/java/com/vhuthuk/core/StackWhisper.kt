@@ -10,29 +10,29 @@ import com.vhuthuk.core.rules.NoClassDefFoundRule
 import com.vhuthuk.core.rules.NullPointerRule
 import com.vhuthuk.core.rules.OutOfMemoryRule
 import com.vhuthuk.core.rules.ViewAfterDestroyRule
+import java.util.concurrent.atomic.AtomicBoolean
 
 object StackWhisper {
 
     private val rules = mutableListOf<ErrorRule>()
-    private var isInitialized = false
+    private val isInitialized = AtomicBoolean(false)
 
     fun init(context: Context) {
-        if (isInitialized) {
+        if (!isInitialized.compareAndSet(false, true)) {
             Log.w("StackWhisper", "⚠️ StackWhisper.init() called more than once. Ignoring.")
             return
         }
 
-        isInitialized = true
         rules.addAll(defaultRules())
 
         Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
             val ctx = ErrorContext.from(throwable)
             val match = rules.firstOrNull { it.matches(throwable, ctx) }
             val explanation = match?.explain() ?: ErrorExplanation.unknown(throwable)
-            explanation.printToLogcat()
+            explanation.printToLogcat(throwable)
         }
 
-        Log.d("StackWhisper", "\uD83D\uDD0D StackWhisper v0.2 initialized — ${rules.size} rules loaded.")
+        Log.d("StackWhisper", "✅ StackWhisper v0.2 initialized — ${rules.size} rules loaded.")
     }
 
     fun addRule(rule: ErrorRule) {
