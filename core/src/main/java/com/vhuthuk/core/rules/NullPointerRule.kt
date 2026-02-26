@@ -25,6 +25,7 @@ class NullPointerRule : ErrorRule {
         suggestedFix = "Check for null before using the object. Replace " +
                 "!! with ?. or ?: to handle null safely. If this comes from " +
                 "a Java library, wrap the call with a null check.",
-        confidence = 75
+        confidence = 75,
+        category = category
     )
 }

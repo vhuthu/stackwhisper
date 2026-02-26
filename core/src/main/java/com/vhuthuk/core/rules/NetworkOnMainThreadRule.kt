@@ -25,6 +25,7 @@ class NetworkOnMainThreadRule : ErrorRule {
         suggestedFix = "Wrap your network call inside a coroutine using " +
                 "withContext(Dispatchers.IO) { } or move it into a " +
                 "ViewModel using viewModelScope.launch { }.",
-        confidence = 99
+        confidence = 99,
+        category = category
     )
 }

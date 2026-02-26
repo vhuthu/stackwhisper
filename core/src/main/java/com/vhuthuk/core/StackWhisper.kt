@@ -1,17 +1,28 @@
 package com.vhuthuk.core
 
 import android.content.Context
+import android.util.Log
 import com.vhuthuk.core.rules.CoroutineScopeRule
 import com.vhuthuk.core.rules.FragmentNotAttachedRule
+import com.vhuthuk.core.rules.HiltInjectionFailureRule
 import com.vhuthuk.core.rules.NetworkOnMainThreadRule
+import com.vhuthuk.core.rules.NoClassDefFoundRule
 import com.vhuthuk.core.rules.NullPointerRule
+import com.vhuthuk.core.rules.OutOfMemoryRule
 import com.vhuthuk.core.rules.ViewAfterDestroyRule
 
 object StackWhisper {
 
     private val rules = mutableListOf<ErrorRule>()
+    private var isInitialized = false
 
     fun init(context: Context) {
+        if (isInitialized) {
+            Log.w("StackWhisper", "⚠️ StackWhisper.init() called more than once. Ignoring.")
+            return
+        }
+
+        isInitialized = true
         rules.addAll(defaultRules())
 
         Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
@@ -20,6 +31,8 @@ object StackWhisper {
             val explanation = match?.explain() ?: ErrorExplanation.unknown(throwable)
             explanation.printToLogcat()
         }
+
+        Log.d("StackWhisper", "\uD83D\uDD0D StackWhisper v0.2 initialized — ${rules.size} rules loaded.")
     }
 
     fun addRule(rule: ErrorRule) {
@@ -27,10 +40,13 @@ object StackWhisper {
     }
 
     private fun defaultRules(): List<ErrorRule> = listOf(
+        HiltInjectionFailureRule(),
         FragmentNotAttachedRule(),
-        NetworkOnMainThreadRule(),
-        NullPointerRule(),
+        ViewAfterDestroyRule(),
         CoroutineScopeRule(),
-        ViewAfterDestroyRule()
+        NetworkOnMainThreadRule(),
+        OutOfMemoryRule(),
+        NoClassDefFoundRule(),
+        NullPointerRule()
     )
 }

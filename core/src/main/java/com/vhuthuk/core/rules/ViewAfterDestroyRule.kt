@@ -27,6 +27,7 @@ class ViewAfterDestroyRule : ErrorRule {
         suggestedFix = "Use viewLifecycleOwner.lifecycleScope.launch instead " +
                 "of lifecycleScope.launch inside Fragments. This ensures your " +
                 "coroutine cancels automatically when the view is destroyed.",
-        confidence = 85
+        confidence = 85,
+        category = category
     )
 }

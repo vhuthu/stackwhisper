@@ -23,11 +23,13 @@ class MainActivity : AppCompatActivity() {
 
         //This where sample testing I was doing lol
 
-        //triggerFragmentNotAttachedCrash()
+       // triggerFragmentNotAttachedCrash()
         //triggerNetworkOnMainThread()
         //triggerNullPointer()
         //triggerCoroutineScopeError()
         //triggerViewAfterDestroy()
+        //triggerOutOfMemory()
+        //triggerHiltInjectionFailure()
     }
 
     private fun triggerFragmentNotAttachedCrash(){
@@ -53,5 +55,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun triggerViewAfterDestroy() {
         throw IllegalStateException("Fragment view has been destroyed")
+    }
+
+    private fun triggerOutOfMemory() {
+        val list = mutableListOf<ByteArray>()
+        while (true) {
+            list.add(ByteArray(1024 * 1024)) // allocate 1MB at a time
+        }
+    }
+
+    private fun triggerHiltInjectionFailure() {
+        val cause = NullPointerException("injected field is null")
+        val stack = Thread.currentThread().stackTrace
+        val fakeElement = StackTraceElement(
+            "com.example.app.Hilt_MainActivity",
+            "inject",
+            "Hilt_MainActivity.java",
+            42
+        )
+        cause.stackTrace = arrayOf(fakeElement) + stack
+        throw RuntimeException("Unable to start activity", cause)
     }
 }
