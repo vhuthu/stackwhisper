@@ -57,21 +57,11 @@ No Googling. No guessing. Just a clear explanation and a fix.
 
 ## Installation
 
-Add JitPack to your root `settings.gradle.kts`:
-
-```kotlin
-dependencyResolutionManagement {
-    repositories {
-        maven { url = uri("https://jitpack.io") }
-    }
-}
-```
-
 Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.vhuthu:stackwhisper:0.1")
+     debugImplementation("io.github.vhuthu-core:stackwhisper:0.1.0")
 }
 ```
 
@@ -108,6 +98,18 @@ StackWhisper never swallows errors.
 
 ---
 
+## Contributing
+
+Contributions are welcome!
+
+If you've seen a confusing crash:
+
+Add a rule,
+Improve explanations,
+Open a PR
+
+---
+
 ## License
 
 ```
@@ -118,4 +120,4 @@ Licensed under the Apache License, Version 2.0
 
 ---
 
-> Built by an Vhuthu Kwinda - Android developer tired of cryptic stacktraces. 🤝
+> Built by Vhuthu Kwinda - Android developer tired of cryptic stacktraces. 🤝
